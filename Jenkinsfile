@@ -1,32 +1,16 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('Build') {
+     agent any
+     stages {
+        stage("Build") {
             steps {
-                script {
-                    // Install dependencies and build the React project
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
+                sh "sudo docker compose down --remove-orphans"
+                sh "sudo docker container prune --force"
+                sh "sudo docker image prune --force"
             }
         }
-        
-        stage('Deploy') {
-            environment {
-                IMAGE = 'saicharan'
-            }
+        stage("Deploy") {
             steps {
-                script {
-                    // Build Docker image
-                    sh "docker build -t $IMAGE ."
-                    
-                    // Push Docker image to a registry (optional)
-                    sh "docker push $IMAGE"
-                    
-                    // Run Docker container
-                    sh "docker run -d -p 80:80 $IMAGE"
-                }
+                sh "sudo docker compose -f docker-compose.yml up --build --no-deps --renew-anon-volumes --detach --remove-orphans"
             }
         }
     }
