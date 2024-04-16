@@ -1,10 +1,10 @@
-# Use the official lightweight Node.js 16 image
-FROM node:16-alpine as build
+# Use a Node.js image as base
+FROM node:20
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /src
 
-# Copy the package.json and package-lock.json
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install dependencies
@@ -13,17 +13,14 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the application
+# Build the React app
 RUN npm run build
 
-# Use a lightweight web server
-FROM nginx:alpine
+# Expose the port the app runs on
+EXPOSE 3000
 
-# Copy the build output to serve from Nginx
-COPY --from=build /app/build /usr/share/nginx/html
+# Set environment variables
+ENV NODE_ENV=development
 
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Start the app
+CMD ["npm", "start"]
