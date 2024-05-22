@@ -10,7 +10,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "sudo docker compose -f docker-compose.yml up --build --no-deps --renew-anon-volumes --detach --remove-orphans"
+                sh "sudo docker compose -f docker-compose.yml up "
             }
         }
     }
