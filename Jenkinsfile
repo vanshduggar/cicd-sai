@@ -3,7 +3,7 @@ pipeline {
      stages {
         stage("Build") {
             steps {
-                sh "sudo docker compose down --remove-orphans"
+                sh "sudo docker compose down"
                 sh "sudo docker container prune --force"
                 sh "sudo docker image prune --force"
             }
