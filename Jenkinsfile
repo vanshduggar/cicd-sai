@@ -5,7 +5,6 @@ pipeline {
             steps {
                 sh "sudo docker-compose down"
                 sh "sudo docker container prune --force"
-                sh "sudo docker image prune --force"
             }
         }
         stage("Deploy") {
